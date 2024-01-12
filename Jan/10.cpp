@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -15,53 +14,59 @@ struct TreeNode
 class Solution
 {
 public:
-    TreeNode *startEdge = NULL;
-    int totalNodes = 0;
-    void dfs(TreeNode *root, unordered_map<int, TreeNode *> &backEdge, int start)
+    vector<int> adj[100001];
+    int vis[100001] = {0};
+
+    void dfs(TreeNode *root)
     {
         if (!root)
+        {
             return;
+        }
+
         if (root->left)
-            backEdge[root->left->val] = root;
+        {
+            adj[root->val].push_back(root->left->val);
+            adj[root->left->val].push_back(root->val);
+            dfs(root->left);
+        }
+
         if (root->right)
-            backEdge[root->right->val] = root;
-        if (root->val == start)
-            startEdge = root;
-        dfs(root->left, backEdge, start);
-        dfs(root->right, backEdge, start);
-        totalNodes++;
+        {
+            adj[root->val].push_back(root->right->val);
+            adj[root->right->val].push_back(root->val);
+            dfs(root->right);
+        }
     }
+
     int amountOfTime(TreeNode *root, int start)
     {
-        unordered_map<int, TreeNode *> backEdge;
-        queue<TreeNode *> q;
-        totalNodes = 0;
-        dfs(root, backEdge, start);
-        unordered_set<int> vis;
-        q.push(startEdge);
-        int ans = 0;
-        while (!q.empty())
+        dfs(root);
+        queue<pair<int, int>> pn;
+
+        int time = 0;
+        pn.push({start, 0});
+        vis[start] = 1;
+
+        while (!pn.empty())
         {
-            int sz = q.size();
-            while (sz--)
+            auto top = pn.front();
+            pn.pop();
+            int node = top.first;
+            int t = top.second;
+            time = max(time, t);
+
+            for (auto adjNode : adj[node])
             {
-                TreeNode *currEdge = q.front();
-                q.pop();
-                if (vis.count(currEdge->val))
-                    continue;
-                vis.insert(currEdge->val);
-                if (vis.size() == totalNodes)
-                    return ans;
-                if (backEdge.count(currEdge->val))
-                    q.push(backEdge[currEdge->val]);
-                if (currEdge->left)
-                    q.push(currEdge->left);
-                if (currEdge->right)
-                    q.push(currEdge->right);
+                if (!vis[adjNode])
+                {
+                    pn.push({adjNode, t + 1});
+                    vis[adjNode] = 1;
+                }
             }
-            ans++;
         }
-        return 0;
+        return time;
     }
 };
 
+// link : https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/description/?envType=daily-question&envId=2024-01-10
