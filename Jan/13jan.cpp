@@ -6,26 +6,26 @@ class Solution
 public:
     int minSteps(string s, string t)
     {
-        unordered_map<char, int> mp;
-        for (auto i : s)
+        unordered_map<char, int> mp1;
+        for (auto ch : s)
         {
-            mp[i]++;
-        }
-        for (auto i : t)
-        {
-            mp[i]--;
+            mp1[ch]++;
         }
 
-        int count = 0;
-        for (auto i : mp)
+        int cnt = 0;
+        for (auto ch : t)
         {
-            if (i.second > 0)
+            if (mp1[ch] > 0)
             {
-                count += i.second;
+                mp1[ch]--;
+            }
+            else
+            {
+                cnt++;
             }
         }
 
-        return count;
+        return cnt;
     }
 };
 
