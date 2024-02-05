@@ -6,7 +6,6 @@ class Solution
 public:
     int firstUniqChar(string s)
     {
-
         unordered_map<char, int> mp;
         int n = s.size(), index = -1;
         for (auto ch : s)
