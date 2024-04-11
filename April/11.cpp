@@ -32,7 +32,7 @@ public:
             }
         }
 
-        return res.size() == 0 ? "0" : res.substr(i);
+        return i == res.size() ? "0" : res.substr(i);
     }
 };
 
