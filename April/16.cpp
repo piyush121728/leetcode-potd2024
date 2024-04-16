@@ -1,41 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
 class Solution
 {
 public:
-    int minimizeDifference(int n, int k, vector<int> &arr)
+    TreeNode *traverse(TreeNode *root, int val, int depth, int curr)
     {
-        // code here
-        int i = 0, j = k - 1;
-        multiset<int> st;
-
-        vector<int> rmin(n, INT_MAX), rmax(n, INT_MIN);
-        rmin[n - 1] = rmax[n - 1] = arr[n - 1];
-        for (int i = n - 2; i >= 0; i--)
+        if (!root)
         {
-            rmin[i] = min(rmin[i + 1], arr[i]);
-            rmax[i] = max(rmax[i + 1], arr[i]);
+            return NULL;
         }
 
-        int res = rmax[k] - rmin[k];
-
-        int lmax = arr[0], lmin = arr[0];
-
-        for (int i = 1; i < n - k; i++)
+        if (curr == depth - 1)
         {
-            int maxInRemaining = max(lmax, rmax[i + k]);
-            int minInRemaining = min(lmin, rmin[i + k]);
-            int currDiff = maxInRemaining - minInRemaining;
-            res = min(res, currDiff);
-
-            lmax = max(arr[i], lmax);
-            lmin = min(arr[i], lmin);
+            auto left = root->left;
+            auto right = root->right;
+            root->left = new TreeNode(val);
+            root->right = new TreeNode(val);
+            root->left->left = left;
+            root->right->right = right;
+            return root;
+        }
+        root->left = traverse(root->left, val, depth, curr + 1);
+        root->right = traverse(root->right, val, depth, curr + 1);
+        return root;
+    }
+    TreeNode *addOneRow(TreeNode *root, int val, int depth)
+    {
+        if (depth == 1)
+        {
+            TreeNode *newRoot = new TreeNode(val);
+            newRoot->left = root;
+            return newRoot;
         }
 
-        res = min(res, lmax - lmin);
-        return res;
-
-        return res;
+        return traverse(root, val, depth, 1);
     }
 };
+
+// link : https://leetcode.com/problems/add-one-row-to-tree/?envType=daily-question&envId=2024-04-16
