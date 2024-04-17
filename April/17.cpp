@@ -14,9 +14,7 @@ struct TreeNode
 class Solution
 {
 public:
-    class Solution
-    {
-    public:
+    
         void travers(TreeNode *root, string str, vector<string> &st)
         {
             if (!root)
@@ -42,7 +40,7 @@ public:
             sort(st.begin(), st.end());
             return st[0];
         }
-    };
+    
 };
 
 // link : https://leetcode.com/problems/smallest-string-starting-from-leaf/?envType=daily-question&envId=2024-04-17
