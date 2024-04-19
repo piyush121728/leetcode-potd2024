@@ -30,3 +30,5 @@ public:
         return islands * 4 - neighbors * 2;
     }
 };
+
+// link : https://leetcode.com/problems/island-perimeter/description/?envType=daily-question&envId=2024-04-18
