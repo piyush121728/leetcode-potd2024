@@ -43,7 +43,7 @@ public:
     int maximumGain(string s, int x, int y)
     {
         int n = s.size(), res = 0;
-        int res = 0;
+
         if (x > y)
         {
             auto it = op1(s, x);
@@ -52,12 +52,11 @@ public:
         }
         else
         {
-            auto it = op2(s, x);
+            auto it = op2(s, y);
             res += it.first;
-            res += op1(it.second, y).first;
+            res += op1(it.second, x).first;
         }
         return res;
     }
 };
-
-// link :
+// link : https://leetcode.com/problems/maximum-score-from-removing-substrings/?envType=daily-question&envId=2024-07-12
